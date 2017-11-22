@@ -88,6 +88,26 @@ class CharacterAccordion extends Component {
     this.setState({ activeIndex: newIndex });
   }
 
+  createPanels(descriptionMaps) {
+    let list = [];
+    descriptionMaps.map(character => {
+      list.push({
+        title: character.name,
+        content: {content: <Accordion.Accordion panels={this.createContentPanels(character.d)} />, key: character.name}
+      });
+    });
+    return list;
+  }
+
+  createContentPanels(descriptions) {
+    let list = [];
+    descriptions.map((descString) => {
+      let splits = descString.split(';');
+      list.push({title: splits[0], content: splits[1]});
+    });
+    return list;
+  }
+
   render() {
     const {activeIndex} = this.state;
     let map = this.props.map;
@@ -108,34 +128,10 @@ class CharacterAccordion extends Component {
         descriptionMaps.push({name: key, d: descriptions});
       }
     }
-    return (
-      <Accordion styled>
-        {
-          descriptionMaps.map((character, characterIndex) => {
 
-            return (
-              <div>
-                <Accordion.Title active={activeIndex===characterIndex} index={characterIndex} onClick={this.handleClick}>
-                  <Icon name='dropdown' />
-                  {character.name} 
-                </Accordion.Title>
-                <Accordion.Content active={activeIndex===characterIndex}>
-                  {
-                    character.d.map((description, descriptionIndex) => {
-                      return (
-                        <DescriptionAccordion
-                          description = {description.split(';')[0]}
-                          sentence = {description.split(';')[1]}
-                        />
-                      )
-                    })
-                  }
-                </Accordion.Content>
-              </div>
-            )
-          })
-        }
-      </Accordion>
+
+    return (
+      <Accordion defaultActiveIndex={-1} panels={this.createPanels(descriptionMaps)} styled /> 
     );
   }
 }
