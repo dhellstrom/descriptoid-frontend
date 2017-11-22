@@ -76,10 +76,10 @@ function DescriptionView(props) {
       let descriptions = [];
       for (var i = 0; i < props.map[key].length; i++) {
         if (props.map[key][i].coarsePartOfSpeech === "NOUN"){
-          descriptions.push(props.map[key][i+1].lemma + " " + props.map[key][i].predictedLemma);
+          descriptions.push(props.map[key][i+1].lemma + " " + props.map[key][i].form + " -- " + props.map[key][i].sentence);
           i++;
         } else {
-          descriptions.push(props.map[key][i].lemma);
+          descriptions.push(props.map[key][i].lemma + " -- " + props.map[key][i].sentence);
         }
       }
       descriptionMaps.push({name: key, d: descriptions});
